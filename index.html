@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avinashilingam University – AI Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --maroon:      #7B1C2E;
+    --maroon-dark: #5a1220;
+    --maroon-mid:  #9e2b40;
+    --gold:        #C9A84C;
+    --gold-light:  #e8c97a;
+    --cream:       #FAF7F2;
+    --white:       #ffffff;
+    --g100:        #f5f3ef;
+    --g200:        #ece8e1;
+    --g300:        #d4cfc7;
+    --g400:        #a09080;
+    --g600:        #6b5f52;
+    --g800:        #3a2e26;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--maroon);
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700; font-size: 17px;
+    color: var(--maroon-dark);
+  }
+  .header-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 700; color: #fff; }
+  .header-sub   { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.8px; text-transform: uppercase; }
+  .status-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; color: rgba(255,255,255,0.85);
+  }
+  .dot { width: 7px; height: 7px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ── LAYOUT ── */
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 255px;
+    background: var(--white);
+    border-right: 1px solid var(--g200);
+    display: flex; flex-direction: column; flex-shrink: 0;
+  }
+  .sidebar-top { padding: 14px 14px 10px; border-bottom: 1px solid var(--g200); }
+  .new-btn {
+    width: 100%; padding: 10px 14px;
+    background: var(--maroon); color: #fff;
+    border: none; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: background .2s;
+  }
+  .new-btn:hover { background: var(--maroon-mid); }
+  .history-list { flex: 1; overflow-y: auto; padding: 6px; }
+  .hist-label {
+    font-size: 10px; font-weight: 600; color: var(--g400);
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 8px 8px 4px;
+  }
+  .hist-item {
+    padding: 9px 10px; border-radius: 7px; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: background .15s;
+  }
+  .hist-item:hover { background: var(--g100); }
+  .hist-item.active { background: rgba(123,28,46,0.09); }
+  .hist-text {
+    font-size: 12.5px; color: var(--g800);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
+  }
+  .hist-del {
+    opacity: 0; background: none; border: none; cursor: pointer;
+    color: var(--g400); font-size: 13px; padding: 2px 4px; border-radius: 4px;
+    transition: opacity .15s, color .15s; flex-shrink: 0;
+  }
+  .hist-item:hover .hist-del { opacity: 1; }
+  .hist-del:hover { color: var(--maroon); }
+
+  /* ── CHAT AREA ── */
+  .chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  #chat-box { flex: 1; overflow-y: auto; padding: 24px 0; scroll-behavior: smooth; }
+
+  .msg-row { display: flex; padding: 5px 26px; gap: 11px; animation: fadeUp .22s ease; }
+  .msg-row.user { flex-direction: row-reverse; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
+
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; flex-shrink: 0; margin-top: 2px;
+  }
+  .avatar.bot  { background: linear-gradient(135deg, var(--maroon), var(--maroon-mid)); color: #fff; font-family: 'Cormorant Garamond', serif; }
+  .avatar.user { background: var(--g200); color: var(--g800); }
+
+  .bubble {
+    max-width: 68%; padding: 11px 15px;
+    font-size: 14px; line-height: 1.65;
+  }
+  .bubble.bot {
+    background: var(--white); color: var(--g800);
+    border: 1px solid var(--g200); border-radius: 4px 16px 16px 16px;
+    box-shadow: 0 1px 4px rgba(90,30,30,0.07);
+  }
+  .bubble.user {
+    background: var(--maroon); color: #fff;
+    border-radius: 16px 4px 16px 16px;
+  }
+
+  /* ── REFERENCE CARD — shown below every bot answer that has a URL ── */
+  .ref-card {
+    max-width: 68%;
+    margin: 3px 0 4px calc(32px + 11px + 26px);
+    background: var(--g100);
+    border: 1px solid var(--g200);
+    border-left: 3px solid var(--maroon);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeUp .28s ease;
+  }
+  .ref-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .ref-title {
+    font-size: 12px; font-weight: 500; color: var(--g800);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .ref-url {
+    font-size: 11px; color: var(--g400);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .ref-badge {
+    font-size: 10px; font-weight: 500;
+    padding: 2px 8px; border-radius: 10px; flex-shrink: 0;
+  }
+  .badge-web     { background: #dbeafe; color: #1e40af; }
+  .badge-dataset { background: #d1fae5; color: #065f46; }
+  .badge-cache   { background: var(--g200); color: var(--g600); }
+  .ref-open {
+    font-size: 11px; font-weight: 500; color: var(--maroon);
+    text-decoration: none; background: var(--white);
+    border: 1px solid var(--g200); padding: 4px 10px; border-radius: 6px;
+    white-space: nowrap; flex-shrink: 0;
+    transition: background .15s, border-color .15s;
+  }
+  .ref-open:hover { background: rgba(123,28,46,0.06); border-color: var(--maroon); }
+
+  .ts { font-size: 10px; color: var(--g400); margin-top: 3px; padding: 0 4px; }
+  .msg-row.user .ts { text-align: right; }
+
+  /* ── TYPING ── */
+  .typing { display: none; padding: 5px 26px; gap: 11px; align-items: center; }
+  .typing.show { display: flex; }
+  .typing-dots {
+    background: var(--white); border: 1px solid var(--g200);
+    border-radius: 4px 16px 16px 16px; padding: 12px 16px;
+    display: flex; gap: 5px; align-items: center;
+    box-shadow: 0 1px 4px rgba(90,30,30,0.07);
+  }
+  .dot2 { width: 7px; height: 7px; background: var(--maroon); border-radius: 50%; opacity:.4; animation: blink 1.2s infinite; }
+  .dot2:nth-child(2){animation-delay:.2s} .dot2:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+
+  /* ── WELCOME ── */
+  .welcome {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; height: 100%;
+    gap: 18px; padding: 40px; text-align: center;
+  }
+  .welcome-icon {
+    width: 62px; height: 62px;
+    background: linear-gradient(135deg, var(--maroon), var(--maroon-mid));
+    border-radius: 18px; display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .welcome h2 { font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 600; color: var(--g800); }
+  .welcome p  { font-size: 14px; color: var(--g600); max-width: 340px; line-height: 1.6; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 480px; }
+  .chip {
+    background: var(--white); border: 1px solid var(--g200);
+    padding: 8px 14px; border-radius: 20px; font-size: 13px;
+    color: var(--g800); cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, color .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .chip:hover { border-color: var(--maroon); box-shadow: 0 0 0 3px rgba(123,28,46,0.08); color: var(--maroon); }
+
+  /* ── INPUT ── */
+  .input-area {
+    background: var(--white); border-top: 1px solid var(--g200);
+    padding: 14px 26px 18px; flex-shrink: 0;
+  }
+  .input-row {
+    display: flex; gap: 10px; align-items: flex-end;
+    background: var(--g100); border: 1.5px solid var(--g200);
+    border-radius: 12px; padding: 10px 10px 10px 16px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .input-row:focus-within { border-color: var(--maroon); box-shadow: 0 0 0 3px rgba(123,28,46,0.08); background: var(--white); }
+  #user-input {
+    flex: 1; border: none; background: transparent;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--g800);
+    resize: none; outline: none; max-height: 100px; line-height: 1.5;
+  }
+  #user-input::placeholder { color: var(--g400); }
+  .send-btn {
+    width: 36px; height: 36px; background: var(--maroon); color: #fff;
+    border: none; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background .2s, transform .1s;
+  }
+  .send-btn:hover { background: var(--maroon-mid); }
+  .send-btn:active { transform: scale(.95); }
+  .send-btn:disabled { background: var(--g300); cursor: not-allowed; }
+  .hint { font-size: 11px; color: var(--g400); margin-top: 6px; text-align: center; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER — status pill only, no brochures button -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">A</div>
+    <div>
+      <div class="header-title">Avinashilingam University</div>
+      <div class="header-sub">AI Academic Assistant</div>
+    </div>
+  </div>
+  <div class="status-pill"><div class="dot"></div>Online</div>
+</div>
+
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-top">
+      <button class="new-btn" onclick="newChat()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        New Conversation
+      </button>
+    </div>
+    <div class="history-list" id="hist-list"></div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-area">
+    <div id="chat-box">
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">🎓</div>
+        <h2>How can I help you today?</h2>
+        <p>Ask me about fees, departments, faculty, admissions, hostel, courses, and more.</p>
+        <div class="chips">
+          <button class="chip" onclick="ask('What are the exam fees?')">Exam fees</button>
+          <button class="chip" onclick="ask('What is the hostel fee?')">Hostel fees</button>
+          <button class="chip" onclick="ask('What are the semester fees?')">Semester fees</button>
+          <button class="chip" onclick="ask('What courses are available?')">Courses</button>
+          <button class="chip" onclick="ask('How to apply for admission?')">Admissions</button>
+          <button class="chip" onclick="ask('What are the one time fees?')">One-time fees</button>
+          <button class="chip" onclick="ask('What is the academic calendar?')">Academic calendar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="typing" id="typing">
+      <div class="avatar bot">A</div>
+      <div class="typing-dots">
+        <div class="dot2"></div><div class="dot2"></div><div class="dot2"></div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-row">
+        <textarea id="user-input" placeholder="Ask about fees, faculty, courses, admissions…" rows="1"
+          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMsg()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+      <div class="hint">Enter to send · Shift+Enter for new line</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── STATE ──
+let convos = JSON.parse(localStorage.getItem('avi_convos') || '[]');
+let currentId = null;
+let busy = false;
+
+function save() { localStorage.setItem('avi_convos', JSON.stringify(convos)); }
+
+// ── HISTORY ──
+function renderHistory() {
+  const list = document.getElementById('hist-list');
+  if (!convos.length) {
+    list.innerHTML = '<div style="padding:16px;font-size:12px;color:#a09080;text-align:center;">No conversations yet</div>';
+    return;
+  }
+  const today = new Date().toDateString();
+  const yest  = new Date(Date.now() - 86400000).toDateString();
+  const groups = { Today: [], Yesterday: [], Earlier: [] };
+  convos.forEach(c => {
+    const d = new Date(c.ts).toDateString();
+    (d === today ? groups.Today : d === yest ? groups.Yesterday : groups.Earlier).push(c);
+  });
+  let html = '';
+  for (const [label, items] of Object.entries(groups)) {
+    if (!items.length) continue;
+    html += `<div class="hist-label">${label}</div>`;
+    items.forEach(c => {
+      html += `<div class="hist-item${c.id === currentId ? ' active' : ''}" onclick="loadConvo('${c.id}')">
+        <span class="hist-text">${esc(c.title)}</span>
+        <button class="hist-del" onclick="delConvo(event,'${c.id}')">✕</button>
+      </div>`;
+    });
+  }
+  list.innerHTML = html;
+}
+
+function loadConvo(id) {
+  currentId = id;
+  const c = convos.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('welcome')?.remove();
+  const box = document.getElementById('chat-box');
+  box.innerHTML = '';
+  c.msgs.forEach(m => addBubble(m.role, m.text, m.source, m.url, m.pageTitle, false));
+  renderHistory();
+  box.scrollTop = box.scrollHeight;
+}
+
+function delConvo(e, id) {
+  e.stopPropagation();
+  convos = convos.filter(c => c.id !== id);
+  save();
+  if (currentId === id) newChat();
+  else renderHistory();
+}
+
+function newChat() {
+  currentId = null;
+  document.getElementById('chat-box').innerHTML = `
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🎓</div>
+      <h2>How can I help you today?</h2>
+      <p>Ask me about fees, departments, faculty, admissions, hostel, courses, and more.</p>
+      <div class="chips">
+        <button class="chip" onclick="ask('What are the exam fees?')">Exam fees</button>
+        <button class="chip" onclick="ask('What is the hostel fee?')">Hostel fees</button>
+        <button class="chip" onclick="ask('What are the semester fees?')">Semester fees</button>
+        <button class="chip" onclick="ask('What courses are available?')">Courses</button>
+        <button class="chip" onclick="ask('How to apply for admission?')">Admissions</button>
+        <button class="chip" onclick="ask('What are the one time fees?')">One-time fees</button>
+        <button class="chip" onclick="ask('What is the academic calendar?')">Academic calendar</button>
+      </div>
+    </div>`;
+  renderHistory();
+}
+
+// ── MESSAGES ──
+function addBubble(role, text, source, url, pageTitle, saveMsg = true) {
+  document.getElementById('welcome')?.remove();
+  const box = document.getElementById('chat-box');
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  if (role === 'user') {
+    box.insertAdjacentHTML('beforeend', `
+      <div class="msg-row user">
+        <div class="avatar user">U</div>
+        <div>
+          <div class="bubble user">${esc(text).replace(/\n/g,'<br>')}</div>
+          <div class="ts">${time}</div>
+        </div>
+      </div>`);
+  } else {
+    // Bot answer bubble
+    box.insertAdjacentHTML('beforeend', `
+      <div class="msg-row bot">
+        <div class="avatar bot">A</div>
+        <div>
+          <div class="bubble bot">${esc(text).replace(/\n/g,'<br>')}</div>
+          <div class="ts">${time}</div>
+        </div>
+      </div>`);
+
+    // Reference card — only shown when Flask returns a url
+    if (url) {
+      const badgeClass = source === 'web' ? 'badge-web' : source === 'cache' ? 'badge-cache' : 'badge-dataset';
+      const badgeLabel = source === 'web' ? 'Website' : source === 'cache' ? 'Cached' : 'Dataset';
+      let displayTitle = pageTitle || '';
+      let shortUrl = url.replace(/^https?:\/\//, '');
+
+      box.insertAdjacentHTML('beforeend', `
+        <div class="ref-card">
+          <div class="ref-info">
+            <div class="ref-title">${esc(displayTitle || shortUrl)}</div>
+            <div class="ref-url">${esc(shortUrl)}</div>
+          </div>
+          <span class="ref-badge ${badgeClass}">${badgeLabel}</span>
+          <a class="ref-open" href="${esc(url)}" target="_blank" rel="noopener">Open ↗</a>
+        </div>`);
+    }
+  }
+
+  box.scrollTop = box.scrollHeight;
+
+  if (saveMsg && currentId) {
+    const c = convos.find(x => x.id === currentId);
+    if (c) { c.msgs.push({ role, text, source, url, pageTitle }); save(); }
+  }
+}
+
+function setLoading(v) {
+  busy = v;
+  document.getElementById('typing').classList.toggle('show', v);
+  document.getElementById('send-btn').disabled = v;
+  if (v) document.getElementById('chat-box').scrollTop = 9999;
+}
+
+async function sendMsg() {
+  if (busy) return;
+  const inp = document.getElementById('user-input');
+  const q = inp.value.trim();
+  if (!q) return;
+  inp.value = ''; inp.style.height = 'auto';
+  await ask(q);
+}
+
+async function ask(question) {
+  if (busy) return;
+
+  if (!currentId) {
+    const id = 'c' + Date.now();
+    convos.unshift({ id, title: question.length > 40 ? question.slice(0,40)+'…' : question, ts: Date.now(), msgs: [] });
+    currentId = id;
+    save();
+  }
+
+  addBubble('user', question, null, null, null);
+  setLoading(true);
+
+  try {
+    const res  = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question })
+    });
+    const data = await res.json();
+    setLoading(false);
+    // Flask must return: { answer, source, url, page_title }
+    addBubble('bot', data.answer, data.source, data.url || null, data.page_title || null);
+  } catch {
+    setLoading(false);
+    addBubble('bot', '❌ Could not reach server. Make sure Flask is running.', null, null, null);
+  }
+  renderHistory();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+}
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+function esc(t) {
+  if (!t) return '';
+  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+renderHistory();
+</script>
+</body>
+</html>

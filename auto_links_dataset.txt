@@ -1,0 +1,11 @@
+AUTO LINK DATASET
+
+ADMISSION: https://avinuty.ac.in/admission/ug-pg-admission
+ADMISSION: https://avinuty.ac.in/form/admission-inquiry
+COURSE: https://avinuty.ac.in/academic-calendar
+COURSE: https://avinuty.ac.in/programmes-offered
+COURSE: https://avinuty.ac.in/programme-outcomes
+RESEARCH: https://avinuty.ac.in/research-and-development-cell
+EXAM: https://avinuty.ac.in/examination
+DEPARTMENT: https://avinuty.ac.in/schools_1
+COURSE: https://avinuty.ac.in/academic-service-centres

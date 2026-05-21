@@ -1,0 +1,73 @@
+{
+"university":"Avinashilingam Institute for Home Science and Higher Education for Women",
+"location":"Coimbatore, Tamil Nadu",
+"campuses":[
+{"name":"Main Campus","city":"Coimbatore"},
+{"name":"Campus II - Chinnavedampatti","city":"Coimbatore"},
+{"name":"Healthcare Campus","city":"Coimbatore"}
+],
+
+"programs":[
+
+{"program":"B.A Economics","degree":"UG","duration":"3 years","fee":"13045","department":"Arts"},
+{"program":"B.A English","degree":"UG","duration":"3 years","fee":"16595","department":"Arts"},
+{"program":"B.A Functional Hindi","degree":"UG","duration":"3 years","fee":"12545","department":"Arts"},
+{"program":"B.A Music","degree":"UG","duration":"3 years","fee":"12645","department":"Arts"},
+{"program":"B.A Tamil","degree":"UG","duration":"3 years","fee":"12545","department":"Arts"},
+
+{"program":"B.Sc Botany","degree":"UG","duration":"3 years","department":"Science"},
+{"program":"B.Sc Biochemistry and Biotechnology","degree":"UG","duration":"3 years","fee":"30000","department":"Science"},
+{"program":"B.Sc Chemistry","degree":"UG","duration":"3 years","department":"Science"},
+{"program":"B.Sc Computer Science","degree":"UG","duration":"3 years","fee":"30000","department":"Computer Science"},
+{"program":"B.Sc Information Technology","degree":"UG","duration":"3 years","fee":"37605","department":"Computer Science"},
+{"program":"B.Sc Mathematics","degree":"UG","duration":"3 years","fee":"22000","department":"Science"},
+{"program":"B.Sc Physics","degree":"UG","duration":"3 years","department":"Science"},
+{"program":"B.Sc Psychology","degree":"UG","duration":"3 years","fee":"27000","department":"Science"},
+{"program":"B.Sc Human Development","degree":"UG","duration":"3 years","department":"Home Science"},
+{"program":"B.Sc Interior Design and Resource Management","degree":"UG","duration":"3 years","department":"Design"},
+{"program":"B.Sc Food Science and Nutrition","degree":"UG","duration":"3 years","department":"Nutrition"},
+{"program":"B.Sc Food Service Management and Dietetics","degree":"UG","duration":"3 years","department":"Nutrition"},
+
+{"program":"BASLP Bachelor of Audiology and Speech Language Pathology","degree":"UG","duration":"4 years","fee":"105595","department":"Healthcare"},
+{"program":"Bachelor of Physiotherapy","degree":"UG","duration":"4 years","fee":"60595","department":"Healthcare"},
+{"program":"Bachelor of Optometry","degree":"UG","duration":"4 years","fee":"60595","department":"Healthcare"},
+{"program":"B.Sc Physician Assistant","degree":"UG","duration":"3 years","fee":"53095","department":"Healthcare"},
+
+{"program":"M.A Economics","degree":"PG","duration":"2 years","fee":"17025","department":"Arts"},
+{"program":"M.A English","degree":"PG","duration":"2 years","fee":"20075","department":"Arts"},
+{"program":"M.A Hindi and Journalism","degree":"PG","duration":"2 years","department":"Arts"},
+{"program":"M.A Music","degree":"PG","duration":"2 years","department":"Arts"},
+{"program":"M.A Tamil","degree":"PG","duration":"2 years","department":"Arts"},
+{"program":"M.A French","degree":"PG","duration":"2 years","fee":"22575","department":"Languages"},
+
+{"program":"MBA","degree":"PG","duration":"2 years","fee":"40575","department":"Management"},
+{"program":"MBA Tourism Management","degree":"PG","duration":"2 years","fee":"35500","department":"Management"},
+{"program":"MBA Information Technology and System Management","degree":"PG","duration":"2 years","fee":"53740","department":"Management"},
+
+{"program":"MCA Master of Computer Applications","degree":"PG","duration":"2 years","fee":"34250","department":"Computer Science"},
+{"program":"M.Com","degree":"PG","duration":"2 years","fee":"33075","department":"Commerce"},
+{"program":"M.Com Computer Applications","degree":"PG","duration":"2 years","fee":"34185","department":"Commerce"},
+
+{"program":"M.Sc Artificial Intelligence","degree":"PG","duration":"2 years","fee":"44290","department":"Computer Science"},
+{"program":"M.Sc Biotechnology","degree":"PG","duration":"2 years","fee":"37675","department":"Science"},
+{"program":"M.Sc Information Technology","degree":"PG","duration":"2 years","fee":"35715","department":"Computer Science"},
+{"program":"M.Sc Physics","degree":"PG","duration":"2 years","fee":"26855","department":"Science"},
+{"program":"M.Sc Applied Psychology","degree":"PG","duration":"2 years","fee":"32805","department":"Psychology"},
+{"program":"M.Sc Biochemistry","degree":"PG","duration":"2 years","department":"Science"},
+{"program":"M.Sc Bioinformatics","degree":"PG","duration":"2 years","department":"Science"},
+{"program":"M.Sc Botany","degree":"PG","duration":"2 years","department":"Science"},
+{"program":"M.Sc Chemistry","degree":"PG","duration":"2 years","department":"Science"},
+{"program":"M.Sc Mathematics","degree":"PG","duration":"2 years","department":"Science"},
+{"program":"M.Sc Zoology","degree":"PG","duration":"2 years","department":"Science"},
+
+{"program":"Master of Social Work","degree":"PG","duration":"2 years","department":"Social Science"},
+{"program":"M.Ed","degree":"PG","duration":"2 years","department":"Education"},
+
+{"program":"PG Diploma Nutrition and Dietetics","degree":"PG Diploma","duration":"1 year","department":"Nutrition"},
+{"program":"PG Diploma Apparel Designing","degree":"PG Diploma","duration":"1 year","department":"Design"},
+{"program":"PG Diploma Public Health Nutrition","degree":"PG Diploma","duration":"1 year","department":"Nutrition"},
+{"program":"PG Diploma French","degree":"PG Diploma","duration":"1 year","department":"Languages"},
+{"program":"PG Diploma Artificial Intelligence","degree":"PG Diploma","duration":"1 year","department":"Computer Science"}
+
+]
+}

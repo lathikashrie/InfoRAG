@@ -1,0 +1,12 @@
+flask
+pandas
+PyPDF2
+python-docx
+openpyxl
+xlrd
+sentence-transformers
+numpy
+groq
+mysql-connector-python
+requests
+beautifulsoup4
